@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,7 +13,6 @@ import {
 import { Plus } from "lucide-react";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -33,9 +33,7 @@ import {
 } from "@/components/ui/select";
 
 const formSchema = z.object({
-  task_id: z
-    .string()
-    .min(1, { error: "Task ID is required." }),
+  task_id: z.string().min(1, { error: "Task ID is required." }),
   title: z
     .string()
     .min(2, { error: "Task title must have at least 2 characters." }),
@@ -45,6 +43,8 @@ const formSchema = z.object({
 
 const CreateTaskDialog = () => {
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,6 +54,7 @@ const CreateTaskDialog = () => {
       priority: "low",
     },
   });
+
   async function onSubmit(data) {
     const resultAction = await dispatch(createTask(data));
 
@@ -67,6 +68,7 @@ const CreateTaskDialog = () => {
         status: "todo",
         priority: "low",
       });
+      setOpen(false);
       return;
     }
 
@@ -74,23 +76,24 @@ const CreateTaskDialog = () => {
       description: resultAction.payload || "Failed to create task.",
     });
   }
-  return (
-    <Dialog>
-      <form id="task-form" onSubmit={form.handleSubmit(onSubmit)}>
-        <DialogTrigger asChild>
-          <Button>
-            <Plus />
-            Create new Task
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Create new Task</DialogTitle>
-            <DialogDescription>
-              Provide task details that you want to create.
-            </DialogDescription>
-          </DialogHeader>
 
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button>
+          <Plus />
+          Create new Task
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Create new Task</DialogTitle>
+          <DialogDescription>
+            Provide task details that you want to create.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form id="task-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
               name="task_id"
@@ -183,17 +186,19 @@ const CreateTaskDialog = () => {
               )}
             />
           </FieldGroup>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button type="submit" form="task-form">
-              Create
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button type="submit" form="task-form">
+            Create
+          </Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 };
+
 export default CreateTaskDialog;

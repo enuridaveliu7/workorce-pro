@@ -19,10 +19,14 @@ const EmployeesPage = () => {
         error,
     } = useSelector((state) => state.employees);
 
-    useEffect(() => {
+    const loadEmployees = () => {
         dispatch(fetchEmployees({ page: currentPage, limit: pageSize })).catch(
             (error) => toast.error("Error", { description: error })
         );
+    };
+
+    useEffect(() => {
+        loadEmployees();
     }, [dispatch, currentPage, pageSize]);
 
     const handleNextPage = () => {
@@ -51,7 +55,10 @@ const EmployeesPage = () => {
                 <p className="text-center text-red-500">{error}</p>
             ) : (
                 <>
-                    <EmployeesList employees={employees} />
+                    <EmployeesList
+                        employees={employees}
+                        onEmployeesChanged={loadEmployees}
+                    />
                     <div className="flex items-center justify-between mt-6 p-4">
                         <div className="text-sm text-gray-600">
                             Page {pagination.page} of {pagination.totalPages} |

@@ -4,29 +4,6 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-// Endpoint - get all users and their departments(or show "Unassigned");
-// router.get("/all-users", authMiddleware, async (req, res) => {
-//     try {
-//         const query = `
-//         SELECT
-//           u.id AS user_id,
-//           u.username AS user_name,
-//           u.email,
-//           u.status,
-//           COALESCE(d.name, 'Unasigned') AS department_name
-//           FROM users u
-//           LEFT JOIN users_departments ud ON u.id = ud.user_id
-//           LEFT JOIN departments d ON d.id = ud.department_id
-//           ORDER BY u.id ASC LIMIT 10;
-//       `;
-
-//         const result = await pool.query(query);
-
-//         res.status(200).json(result.rows);
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });
 router.get("/all-users", authMiddleware, async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -66,7 +43,6 @@ router.get("/all-users", authMiddleware, async (req, res) => {
     }
 });
 
-// Endpoint - get all employees by department_id
 router.get("/department/:department_id", authMiddleware, async (req, res) => {
     const { department_id } = req.params;
 
@@ -96,7 +72,6 @@ router.get("/department/:department_id", authMiddleware, async (req, res) => {
     }
 });
 
-//Endpoint - update user department;
 router.put("/update-department", authMiddleware, async (req, res) => {
     const { user_id, department_id } = req.body;
 
@@ -155,7 +130,6 @@ router.put("/update-department", authMiddleware, async (req, res) => {
     }
 });
 
-// Endpoint - update user status
 router.put("/update-status", authMiddleware, async (req, res) => {
     const { user_id, status } = req.body;
 
@@ -183,6 +157,34 @@ router.put("/update-status", authMiddleware, async (req, res) => {
 
         res.status(200).json({
             message: "User status updated successfully.",
+            data: result.rows[0],
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.delete("/:id", authMiddleware, async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (req.user.status !== "admin") {
+            return res
+                .status(403)
+                .json({ message: "Access denied. Admins only." });
+        }
+
+        const result = await pool.query(
+            "DELETE FROM users WHERE id = $1 RETURNING id, username, email, status",
+            [id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        res.status(200).json({
+            message: "Employee deleted successfully.",
             data: result.rows[0],
         });
     } catch (error) {
