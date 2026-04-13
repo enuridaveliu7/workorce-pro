@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.DS_Store
+.env
+.env.*
+employee-management-frontend/node_modules/
+employee-management-frontend/dist/
+employee-management-frontend/.env.local
+employee-management-express/node_modules/
+employee-management-express/.env
+employee-management-backend/node_modules/
+.vscode/

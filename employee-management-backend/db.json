@@ -1,0 +1,93 @@
+{
+  "departments": [
+    {
+      "id": 1,
+      "name": "WebDevs",
+      "employee_list": [
+        {
+          "id": 1,
+          "name": "Enes Shala",
+          "address": "Rr. Deshmoret e Kombit",
+          "email": "enes@gmail.com",
+          "phone": "12345678"
+        },
+        {
+          "id": 2,
+          "name": "Amet Ameti",
+          "address": "Rr. Deshmoret e Kombit",
+          "email": "amet@gmail.com",
+          "phone": "12345678"
+        },
+        {
+          "id": 3,
+          "name": "Armend Rexhepiii",
+          "address": "Rr. Deshmoret e Kombit",
+          "email": "armend@gmail.com",
+          "phone": "123456789"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "JCoaching",
+      "employee_list": [
+        {
+          "id": 4,
+          "name": "Enisa Hebibi",
+          "address": "Rr. Deshmoret e Kombit",
+          "email": "enisa@gmail.com",
+          "phone": "12345678"
+        },
+        {
+          "id": 5,
+          "name": "Bleon Krasniqi",
+          "address": "Rr. Deshmoret e Kombit",
+          "email": "bleon@gmail.com",
+          "phone": "12345678"
+        },
+        {
+          "id": 6,
+          "name": "Valdrin Beqiri",
+          "address": "Rr. Deshmoret e Kombit",
+          "email": "valdrin@gmail.com",
+          "phone": "12345678"
+        },
+        {
+          "id": 10,
+          "name": "enisahebibi@gmail.com"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Sales Team",
+      "employee_list": [
+        {
+          "id": 7,
+          "name": "Gentiana Azemi",
+          "address": "Rr. Deshmoret e Kombit",
+          "email": "gentiana@gmail.com",
+          "phone": "12345678"
+        },
+        {
+          "id": 8,
+          "name": "Jon Berisha",
+          "address": "Rr. Deshmoret e Kombit",
+          "email": "jon@gmail.com",
+          "phone": "12345678"
+        },
+        {
+          "id": 9,
+          "name": "Filan Fisteku",
+          "address": "Rr. Deshmoret e Kombit",
+          "email": "filan@gmail.com",
+          "phone": "12345678"
+        }
+      ]
+    }
+  ],
+  "lastUsedId": {
+    "departmentId": 3,
+    "employeeId": 10
+  }
+}

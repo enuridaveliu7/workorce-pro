@@ -1,0 +1,17 @@
+{
+  "name": "group_09_25",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+"dev": "concurrently \"npm run dev --prefix employee-management-frontend\" \"npm run dev --prefix employee-management-express\""
+
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
