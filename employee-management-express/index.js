@@ -4,22 +4,42 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-// Import Routes
 const authRoutes = require("./routes/auth");
 const departmentsRoutes = require("./routes/departments");
 const employeesRoutes = require("./routes/employees");
 const tasksRoutes = require("./routes/tasks");
 
 const app = express();
+const allowedOrigins = (process.env.DOMAIN || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
 
-app.use(cors({ origin: process.env.DOMAIN }));
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            if (!origin) {
+                return callback(null, true);
+            }
+
+            const isExplicitlyAllowed = allowedOrigins.includes(origin);
+            const isVercelPreview = /\.vercel\.app$/.test(new URL(origin).hostname);
+            const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+
+            if (isExplicitlyAllowed || isVercelPreview || isLocalhost) {
+                return callback(null, true);
+            }
+
+            return callback(new Error("Not allowed by CORS"));
+        },
+    })
+);
 app.use(express.json());
 
-// Use Routes
-app.use("/api/auth", authRoutes); //http://localhost:8095/api/auth
-app.use("/api/departments", departmentsRoutes); //http://localhost:8095/api/departments/
-app.use("/api/employees", employeesRoutes); //http://localhost:8095/api/employees/
-app.use("/api/tasks", tasksRoutes); //http://localhost:8095/api/tasks/
+app.use("/api/auth", authRoutes);
+app.use("/api/departments", departmentsRoutes);
+app.use("/api/employees", employeesRoutes);
+app.use("/api/tasks", tasksRoutes);
 
 const PORT = process.env.PORT || 8095;
 

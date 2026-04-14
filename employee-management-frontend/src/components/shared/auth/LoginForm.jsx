@@ -43,12 +43,11 @@ const LoginForm = () => {
                 }
             );
 
-            if (!result.ok) {
-                const errorData = await result.json();
-                throw new Error(errorData.message || "Failed to log in.");
-            }
-
             const responseData = await result.json();
+
+            if (!result.ok) {
+                throw new Error(responseData.message || "Failed to log in.");
+            }
 
             localStorage.setItem("token", responseData.token);
             localStorage.setItem("user", JSON.stringify(responseData.user));
@@ -56,7 +55,7 @@ const LoginForm = () => {
             dispatch(login(responseData.user));
             navigate("/overview");
         } catch (error) {
-            toast.error(error.message);
+            toast.error(error.message || "Failed to fetch");
             console.log(error);
         }
     };
